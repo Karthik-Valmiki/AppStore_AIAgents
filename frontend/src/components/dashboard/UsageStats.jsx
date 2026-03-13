@@ -68,11 +68,20 @@ export default function UsageStats() {
   return (
     <div className="grid grid-4">
       {statCards.map((stat, index) => (
-        <div key={index} className="card" style={styles.stat}>
+        <div 
+          key={index} 
+          className="card hover-lift" 
+          style={{
+            ...styles.stat,
+            animationDelay: `${index * 0.1}s`,
+            opacity: 0,
+            animation: `fadeInScale 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s forwards`
+          }}
+        >
           <div style={{ ...styles.iconWrapper, background: stat.color }}>
             <div style={styles.icon}>{stat.icon}</div>
           </div>
-          <h3 style={styles.number}>{stat.value.toLocaleString()}</h3>
+          <h3 style={styles.number} className="gradient-text">{stat.value.toLocaleString()}</h3>
           <p style={styles.label}>{stat.label}</p>
         </div>
       ))}
@@ -81,17 +90,32 @@ export default function UsageStats() {
 }
 
 const styles = {
-  stat: { textAlign: 'center', padding: '32px 20px' },
+  stat: { 
+    textAlign: 'center', 
+    padding: '32px 20px',
+    position: 'relative',
+    overflow: 'hidden'
+  },
   iconWrapper: { 
-    width: '56px', 
-    height: '56px', 
-    borderRadius: '12px', 
+    width: '64px', 
+    height: '64px', 
+    borderRadius: '16px', 
     display: 'flex', 
     alignItems: 'center', 
     justifyContent: 'center', 
-    margin: '0 auto 16px' 
+    margin: '0 auto 20px',
+    boxShadow: '0 8px 16px rgba(0, 0, 0, 0.15)',
+    transition: 'transform 0.3s ease'
   },
-  icon: { width: '28px', height: '28px', color: 'white' },
-  number: { fontSize: '32px', fontWeight: '800', color: 'var(--dark)', marginBottom: '8px' },
-  label: { color: 'var(--gray)', fontSize: '14px', fontWeight: '600' }
+  icon: { width: '32px', height: '32px', color: 'white' },
+  number: { 
+    fontSize: '40px', 
+    fontWeight: '900', 
+    marginBottom: '8px',
+    background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text'
+  },
+  label: { color: 'var(--gray)', fontSize: '14px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }
 };

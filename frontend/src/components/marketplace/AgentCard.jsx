@@ -2,9 +2,9 @@ import Button from '../common/Button';
 
 export default function AgentCard({ agent, onSelect }) {
   return (
-    <div className="card" style={styles.card}>
+    <div className="card hover-lift" style={styles.card}>
       <div style={styles.header}>
-        <div style={styles.categoryBadge}>
+        <div style={styles.categoryBadge} className="badge-primary">
           {agent.category.replace('_', ' ')}
         </div>
         <div style={styles.rating}>
@@ -23,19 +23,19 @@ export default function AgentCard({ agent, onSelect }) {
           <svg style={styles.metaIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
-          {agent.downloads}
+          <span style={styles.metaValue}>{agent.downloads} downloads</span>
         </div>
         <div style={styles.metaItem}>
           <svg style={styles.metaIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
           </svg>
-          v{agent.version}
+          <span style={styles.metaValue}>v{agent.version}</span>
         </div>
       </div>
       
       <div style={styles.footer}>
         <span style={styles.developer}>by {agent.developer_name}</span>
-        <Button onClick={() => onSelect(agent)} style={{ padding: '8px 16px', fontSize: '14px' }}>
+        <Button onClick={() => onSelect(agent)} style={{ padding: '10px 20px', fontSize: '14px' }}>
           View Details
         </Button>
       </div>
@@ -44,34 +44,69 @@ export default function AgentCard({ agent, onSelect }) {
 }
 
 const styles = {
-  card: { display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' },
+  card: { 
+    display: 'flex', 
+    flexDirection: 'column', 
+    gap: '16px', 
+    height: '100%',
+    cursor: 'pointer'
+  },
   header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
   categoryBadge: { 
     fontSize: '12px', 
-    padding: '6px 12px', 
-    background: 'rgba(99, 102, 241, 0.1)', 
-    borderRadius: '6px', 
-    color: 'var(--primary)', 
+    padding: '6px 14px', 
+    borderRadius: '20px', 
     fontWeight: '600',
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
+    transition: 'all 0.3s ease'
   },
   rating: {
     display: 'flex',
     alignItems: 'center',
-    gap: '4px',
-    fontSize: '14px',
-    fontWeight: '600',
+    gap: '6px',
+    fontSize: '15px',
+    fontWeight: '700',
     color: 'var(--warning)'
   },
   starIcon: {
-    width: '16px',
-    height: '16px'
+    width: '18px',
+    height: '18px'
   },
-  name: { fontSize: '20px', fontWeight: '700', color: 'var(--dark)', margin: '4px 0' },
-  description: { fontSize: '14px', color: 'var(--gray)', lineHeight: '1.6', flex: 1 },
-  meta: { display: 'flex', gap: '16px', fontSize: '14px', color: 'var(--gray)', fontWeight: '500' },
+  name: { 
+    fontSize: '22px', 
+    fontWeight: '800', 
+    color: 'var(--dark)', 
+    margin: '8px 0',
+    lineHeight: '1.3'
+  },
+  description: { 
+    fontSize: '14px', 
+    color: 'var(--gray)', 
+    lineHeight: '1.7', 
+    flex: 1,
+    display: '-webkit-box',
+    WebkitLineClamp: 3,
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden'
+  },
+  meta: { 
+    display: 'flex', 
+    gap: '20px', 
+    fontSize: '13px', 
+    color: 'var(--gray)', 
+    fontWeight: '600',
+    paddingTop: '12px',
+    borderTop: '1px solid rgba(0,0,0,0.05)'
+  },
   metaItem: { display: 'flex', alignItems: 'center', gap: '6px' },
-  metaIcon: { width: '18px', height: '18px' },
-  footer: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--gray-light)' },
-  developer: { fontSize: '13px', color: 'var(--gray)', fontWeight: '500' }
+  metaIcon: { width: '18px', height: '18px', color: 'var(--primary)' },
+  metaValue: { fontSize: '13px' },
+  footer: { 
+    display: 'flex', 
+    justifyContent: 'space-between', 
+    alignItems: 'center', 
+    marginTop: 'auto', 
+    paddingTop: '16px'
+  },
+  developer: { fontSize: '13px', color: 'var(--gray)', fontWeight: '600' }
 };

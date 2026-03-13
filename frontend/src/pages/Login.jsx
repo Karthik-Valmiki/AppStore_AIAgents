@@ -20,6 +20,14 @@ export default function Login() {
     setLoading(true);
     
     try {
+      if (!formData.username || !formData.email || !formData.password) {
+        throw new Error('All fields are required');
+      }
+      
+      if (formData.password.length < 6) {
+        throw new Error('Password must be at least 6 characters');
+      }
+      
       console.log('Registration: Attempting to register...');
       await authService.register(formData);
       console.log('Registration: Success!');
@@ -40,26 +48,26 @@ export default function Login() {
 
   return (
     <div style={styles.container}>
-      <div style={styles.leftPanel}>
+      <div style={styles.leftPanel} className="slide-in-left">
         <div style={styles.brandSection}>
-          <h1 style={styles.brandTitle}>AI Agent Store</h1>
+          <h1 style={styles.brandTitle} className="float">AI Agent Store</h1>
           <p style={styles.brandSubtitle}>
             The premier marketplace for AI-powered agents. Discover, deploy, and manage intelligent solutions.
           </p>
           <div style={styles.features}>
-            <div style={styles.feature}>
+            <div style={styles.feature} className="fade-in" style={{animationDelay: '0.2s'}}>
               <svg style={styles.featureIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               <span>Smart AI Recommendations</span>
             </div>
-            <div style={styles.feature}>
+            <div style={styles.feature} className="fade-in" style={{animationDelay: '0.4s'}}>
               <svg style={styles.featureIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               <span>Voice Search Enabled</span>
             </div>
-            <div style={styles.feature}>
+            <div style={styles.feature} className="fade-in" style={{animationDelay: '0.6s'}}>
               <svg style={styles.featureIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
@@ -69,8 +77,8 @@ export default function Login() {
         </div>
       </div>
 
-      <div style={styles.rightPanel}>
-        <div className="card" style={styles.card}>
+      <div style={styles.rightPanel} className="slide-in-right">
+        <div className="card fade-in-scale" style={styles.card}>
           {!isRegister ? (
             <>
               <LoginForm onSuccess={() => navigate('/marketplace')} />
@@ -88,7 +96,7 @@ export default function Login() {
                 {error && <div className="alert alert-error">{error}</div>}
                 {success && <div className="alert alert-success">Registration successful! Redirecting to login...</div>}
                 
-                <div>
+                <div className="fade-in" style={{animationDelay: '0.1s'}}>
                   <label style={styles.label}>Username</label>
                   <input
                     className="input"
@@ -101,7 +109,7 @@ export default function Login() {
                   />
                 </div>
 
-                <div>
+                <div className="fade-in" style={{animationDelay: '0.2s'}}>
                   <label style={styles.label}>Email</label>
                   <input
                     className="input"
@@ -115,7 +123,7 @@ export default function Login() {
                   />
                 </div>
 
-                <div>
+                <div className="fade-in" style={{animationDelay: '0.3s'}}>
                   <label style={styles.label}>Password</label>
                   <input
                     className="input"
@@ -130,7 +138,9 @@ export default function Login() {
                   />
                 </div>
 
-                <RoleSelector value={formData.role} onChange={(role) => setFormData({ ...formData, role })} />
+                <div className="fade-in" style={{animationDelay: '0.4s'}}>
+                  <RoleSelector value={formData.role} onChange={(role) => setFormData({ ...formData, role })} />
+                </div>
                 
                 <Button type="submit" disabled={loading} style={{ width: '100%' }}>
                   {loading ? 'Creating Account...' : 'Create Account'}
