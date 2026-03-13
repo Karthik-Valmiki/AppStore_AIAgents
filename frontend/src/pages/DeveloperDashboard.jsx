@@ -29,29 +29,30 @@ export default function DeveloperDashboard() {
   return (
     <div style={styles.page}>
       <div className="container">
-        <div style={styles.header}>
-          <h1 style={styles.title}>Developer Dashboard</h1>
+        <div style={styles.header} className="slide-in-up">
+          <h1 style={styles.title} className="gradient-text">Developer Dashboard</h1>
           <p style={styles.subtitle}>Manage your AI agents and track performance</p>
         </div>
         
-        <div style={styles.section}>
+        <div style={styles.section} className="fade-in" style={{animationDelay: '0.1s'}}>
           <h2 style={styles.sectionTitle}>Statistics</h2>
           <UsageStats />
         </div>
 
-        <div style={styles.section}>
+        <div style={styles.section} className="fade-in" style={{animationDelay: '0.2s'}}>
           <h2 style={styles.sectionTitle}>Publish New Agent</h2>
           <AgentPublishForm onSuccess={fetchMyAgents} />
         </div>
 
-        <div style={styles.section}>
+        <div style={styles.section} className="fade-in" style={{animationDelay: '0.3s'}}>
           <h2 style={styles.sectionTitle}>Your Published Agents</h2>
           {loading ? (
             <div className="loading">
               <div className="spinner"></div>
+              <p className="loading-text">Loading your agents...</p>
             </div>
           ) : myAgents.length === 0 ? (
-            <div className="card" style={styles.empty}>
+            <div className="card fade-in-scale" style={styles.empty}>
               <svg style={styles.emptyIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
               </svg>
@@ -60,8 +61,17 @@ export default function DeveloperDashboard() {
             </div>
           ) : (
             <div className="grid grid-3">
-              {myAgents.map((agent) => (
-                <div key={agent.id} className="card" style={styles.agentCard}>
+              {myAgents.map((agent, index) => (
+                <div 
+                  key={agent.id} 
+                  className="card hover-lift" 
+                  style={{
+                    ...styles.agentCard,
+                    animationDelay: `${index * 0.08}s`,
+                    opacity: 0,
+                    animation: `fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.08}s forwards`
+                  }}
+                >
                   <div style={styles.agentHeader}>
                     <h3 style={styles.agentName}>{agent.name}</h3>
                     <span className={`badge ${agent.is_active ? 'badge-success' : ''}`}>

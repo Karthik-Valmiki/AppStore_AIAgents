@@ -71,12 +71,22 @@ export default function AgentDetail() {
       return;
     }
 
+    if (rating < 1 || rating > 5) {
+      alert('Rating must be between 1 and 5');
+      return;
+    }
+
+    if (review.length > 1000) {
+      alert('Review must be less than 1000 characters');
+      return;
+    }
+
     setSubmitting(true);
     try {
       await api.post('/interactions/ratings/', {
         agent_id: parseInt(id),
         score: rating,
-        review: review
+        review: review.trim()
       });
       alert('Rating submitted successfully!');
       setShowRatingForm(false);
@@ -98,7 +108,7 @@ export default function AgentDetail() {
         <div className="container">
           <div className="loading">
             <div className="spinner"></div>
-            <p style={{ marginTop: '16px' }}>Loading agent details...</p>
+            <p className="loading-text">Loading agent details...</p>
           </div>
         </div>
       </div>
@@ -112,7 +122,7 @@ export default function AgentDetail() {
       <div className="container">
         {/* Back Button */}
         <button 
-          className="btn btn-ghost" 
+          className="btn btn-ghost hover-lift" 
           onClick={() => navigate('/marketplace')}
           style={styles.backBtn}
         >
@@ -124,10 +134,10 @@ export default function AgentDetail() {
 
         <div style={styles.content}>
           {/* Main Info */}
-          <div className="card" style={styles.mainCard}>
+          <div className="card fade-in-scale" style={styles.mainCard}>
             <div style={styles.header}>
               <div>
-                <div style={styles.categoryBadge}>
+                <div style={styles.categoryBadge} className="badge-primary">
                   {agent.category.replace('_', ' ')}
                 </div>
                 <h1 style={styles.title}>{agent.name}</h1>
@@ -185,7 +195,7 @@ export default function AgentDetail() {
 
             {/* Rating Form */}
             {showRatingForm && (
-              <form onSubmit={handleSubmitRating} style={styles.ratingForm} className="card">
+              <form onSubmit={handleSubmitRating} style={styles.ratingForm} className="card slide-in-up">
                 <h3 style={styles.formTitle}>Rate this Agent</h3>
                 <div>
                   <label style={styles.label}>Rating (1-5 stars)</label>
@@ -197,6 +207,7 @@ export default function AgentDetail() {
                         fill={star <= rating ? 'currentColor' : 'none'}
                         viewBox="0 0 20 20"
                         onClick={() => setRating(star)}
+                        className="hover-scale"
                       >
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
@@ -221,14 +232,24 @@ export default function AgentDetail() {
           </div>
 
           {/* Ratings Section */}
-          <div className="card" style={styles.ratingsCard}>
+          <div className="card slide-in-up" style={{...styles.ratingsCard, animationDelay: '0.2s'}}>
             <h2 style={styles.sectionTitle}>User Reviews ({ratings.length})</h2>
             {ratings.length === 0 ? (
               <p style={styles.noRatings}>No reviews yet. Be the first to rate this agent!</p>
             ) : (
               <div style={styles.ratingsList}>
-                {ratings.map((r) => (
-                  <div key={r.id} style={styles.ratingItem}>
+                {ratings.map((r, index) => (
+                  <div 
+                    key={r.id} 
+                    style={styles.ratingItem}
+                    className="fade-in"
+                    style={{
+                      ...styles.ratingItem,
+                      animationDelay: `${index * 0.1}s`,
+                      opacity: 0,
+                      animation: `fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.1}s forwards`
+                    }}
+                  >
                     <div style={styles.ratingHeader}>
                       <span style={styles.ratingUser}>{r.user_name || 'Anonymous'}</span>
                       <div style={styles.ratingStars}>

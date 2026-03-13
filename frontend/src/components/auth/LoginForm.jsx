@@ -34,12 +34,12 @@ export default function LoginForm({ onSuccess }) {
       <p style={styles.subtitle}>Sign in to access the marketplace</p>
       
       {error && (
-        <div className="alert alert-error">
+        <div className="alert alert-error error-shake">
           {error}
         </div>
       )}
       
-      <div>
+      <div className="fade-in" style={{animationDelay: '0.1s'}}>
         <label style={styles.label}>Username</label>
         <input
           className="input"
@@ -53,7 +53,7 @@ export default function LoginForm({ onSuccess }) {
         />
       </div>
 
-      <div>
+      <div className="fade-in" style={{animationDelay: '0.2s'}}>
         <label style={styles.label}>Password</label>
         <input
           className="input"
@@ -67,9 +67,11 @@ export default function LoginForm({ onSuccess }) {
         />
       </div>
 
-      <Button type="submit" disabled={loading} style={{ width: '100%' }}>
-        {loading ? 'Signing in...' : 'Sign In'}
-      </Button>
+      <div className="fade-in" style={{animationDelay: '0.3s'}}>
+        <Button type="submit" disabled={loading} style={{ width: '100%' }}>
+          {loading ? 'Signing in...' : 'Sign In'}
+        </Button>
+      </div>
     </form>
   );
 }
