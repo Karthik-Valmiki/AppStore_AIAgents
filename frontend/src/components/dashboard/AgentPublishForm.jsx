@@ -21,22 +21,48 @@ export default function AgentPublishForm({ onSuccess }) {
     setLoading(true);
     
     try {
-      await api.post('/agents/', formData);
+      console.log('=== Agent Publish Form Submission ===');
+      console.log('Form Data:', formData);
+      
+      if (!formData.name || !formData.description || !formData.api_endpoint) {
+        throw new Error('Please fill in all required fields');
+      }
+      
+      if (formData.name.length > 100) {
+        throw new Error('Agent name must be less than 100 characters');
+      }
+      
+      if (formData.description.length > 500) {
+        throw new Error('Description must be less than 500 characters');
+      }
+      
+      console.log('Validation passed, sending to API...');
+      
+      const response = await api.post('/agents/', formData);
+      
+      console.log('API Response:', response.data);
+      console.log('✅ Agent published successfully!');
+      
       setFormData({ name: '', description: '', category: 'productivity', api_endpoint: '', version: '1.0.0' });
       setSuccess(true);
-      onSuccess();
+      if (onSuccess) onSuccess();
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      setError(err.response?.data?.detail || 'Failed to publish agent');
+      console.error('❌ Error publishing agent:', err);
+      console.error('Error response:', err.response?.data);
+      console.error('Error status:', err.response?.status);
+      
+      const errorMessage = err.response?.data?.detail || err.message || 'Failed to publish agent';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card" style={styles.form}>
-      {error && <div className="alert alert-error">{error}</div>}
-      {success && <div className="alert alert-success">Agent published successfully!</div>}
+    <form onSubmit={handleSubmit} className="card fade-in" style={{...styles.form, animationDelay: '0.2s'}}>
+      {error && <div className="alert alert-error error-shake">{error}</div>}
+      {success && <div className="alert alert-success success-pop">Agent published successfully!</div>}
       
       <div style={styles.row}>
         <div style={styles.field}>

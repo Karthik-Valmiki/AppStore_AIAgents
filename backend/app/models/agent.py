@@ -1,16 +1,7 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey, Enum
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
-import enum
 from app.core.database import Base
-
-class AgentCategory(str, enum.Enum):
-    PRODUCTIVITY = "productivity"
-    ANALYTICS = "analytics"
-    CUSTOMER_SERVICE = "customer_service"
-    CONTENT = "content"
-    AUTOMATION = "automation"
-    OTHER = "other"
 
 class Agent(Base):
     __tablename__ = "agents"
@@ -18,7 +9,7 @@ class Agent(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False, index=True)
     description = Column(String, nullable=False)
-    category = Column(Enum(AgentCategory), nullable=False)
+    category = Column(String, nullable=False)
     developer_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     version = Column(String, default="1.0.0")
     api_endpoint = Column(String, nullable=False)

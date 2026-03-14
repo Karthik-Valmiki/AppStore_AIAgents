@@ -1,13 +1,7 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, UniqueConstraint
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from datetime import datetime
-import enum
 from app.core.database import Base
-
-class InteractionType(str, enum.Enum):
-    VIEW = "view"
-    DOWNLOAD = "download"
-    USE = "use"
 
 class Interaction(Base):
     __tablename__ = "interactions"
@@ -15,7 +9,7 @@ class Interaction(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     agent_id = Column(Integer, ForeignKey("agents.id"), nullable=False)
-    interaction_type = Column(Enum(InteractionType), nullable=False)
+    interaction_type = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User", back_populates="interactions")

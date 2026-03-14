@@ -110,14 +110,14 @@ export default function MarketplaceHome() {
     <div style={styles.page}>
       <div className="container">
         {/* Header */}
-        <div style={styles.header} className="fade-in">
-          <h1 style={styles.title}>Discover AI Agents</h1>
+        <div style={styles.header} className="slide-in-up">
+          <h1 style={styles.title} className="gradient-text">Discover AI Agents</h1>
           <p style={styles.subtitle}>
             {user ? `Welcome back, ${user.username}!` : 'Find the perfect AI agent for your needs'}
           </p>
           
           {/* Search Bar */}
-          <div style={styles.searchBar}>
+          <div style={styles.searchBar} className="fade-in-scale">
             <div style={styles.searchWrapper}>
               <svg style={styles.searchIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -145,10 +145,12 @@ export default function MarketplaceHome() {
         </div>
 
         {/* Category Filter */}
-        <CategoryFilter value={category} onChange={setCategory} />
+        <div className="slide-in-left">
+          <CategoryFilter value={category} onChange={setCategory} />
+        </div>
 
         {/* View Tabs */}
-        <div style={styles.tabs}>
+        <div style={styles.tabs} className="slide-in-right">
           <button 
             className={`btn ${view === 'all' ? 'btn-primary' : 'btn-ghost'}`}
             onClick={() => setView('all')}
@@ -179,10 +181,10 @@ export default function MarketplaceHome() {
           {loading ? (
             <div className="loading">
               <div className="spinner"></div>
-              <p style={{ marginTop: '16px' }}>Loading agents...</p>
+              <p className="loading-text">Loading agents...</p>
             </div>
           ) : displayAgents.length === 0 ? (
-            <div style={styles.empty} className="card">
+            <div style={styles.empty} className="card fade-in-scale">
               <svg style={styles.emptyIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -196,7 +198,15 @@ export default function MarketplaceHome() {
           ) : (
             <div className="grid grid-3">
               {displayAgents.map((agent, index) => (
-                <div key={agent.id} className="fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div 
+                  key={agent.id} 
+                  className="fade-in" 
+                  style={{ 
+                    animationDelay: `${index * 0.08}s`,
+                    opacity: 0,
+                    animation: `fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.08}s forwards`
+                  }}
+                >
                   <AgentCard agent={agent} onSelect={trackInteraction} />
                 </div>
               ))}
